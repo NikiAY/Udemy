@@ -25,4 +25,4 @@ config = {
 # response = requests.post(url= exercise_endpint, json= config, headers= headers)
 # response.raise_for_status()
 # result = response.json()
-# print(re
+# print(response.json())
