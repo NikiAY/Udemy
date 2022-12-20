@@ -1,0 +1,41 @@
+import tkinter as tk
+from PIL import ImageTk, Image  
+from timer import Timer
+
+# ---------------------------- CONSTANTS ------------------------------- #
+PINK = "#e2979c"
+RED = "#e7305b"
+GREEN = "#9bdeac"
+YELLOW = "#f7f5dd"
+FONT_NAME = "Courier"
+
+
+# ---------------------------- UI SETUP ------------------------------- #
+
+window = tk.Tk()
+window.title("Pomodoro")
+window.config(padx= 100, pady= 50, bg= "#E8F9FD")
+
+canvas = tk.Canvas(window, width = 300, height = 400, bg= "#E8F9FD", highlightthickness= 0)  
+
+tomato_img = ImageTk.PhotoImage(Image.open("tomato.png"))  
+canvas.create_image((150, 200), image = tomato_img)
+
+timer_label = canvas.create_text(150, 230, text= "00:00", fill= "white", font= (FONT_NAME, 35, "bold"))
+canvas.grid(column= 1, row= 1)  
+
+status_label = tk.Label(text= "Timer", font= (FONT_NAME, 30, "bold"), bg= "#E8F9FD", fg= "#59CE8F")
+status_label.grid(column= 1, row= 0)
+
+check_label = tk.Label(text= "", font= (FONT_NAME, 15, "bold") ,bg= "#E8F9FD", fg= "#59CE8F")
+check_label.grid(column= 1, row= 3)
+
+timer_object = Timer(canvas, window, timer_label, status_label, check_label)
+
+start_button = tk.Button(text= "Start", highlightthickness= 0, command= timer_object.count_down)
+start_button.grid(column= 0, row= 2)
+
+reset_button = tk.Button(text= "Reset", highlightthickness= 0, command= timer_object.reset_all)
+reset_button.grid(column= 5, row= 2)
+
+window.mainloop()
