@@ -1,0 +1,59 @@
+import pandas as pd
+import time
+from turtle import Turtle, Screen
+
+FONT = ("Courier", 11, "bold")
+
+df_states = pd.read_csv("50_states.csv")
+
+writer = Turtle()
+writer.color("black")
+writer.penup()
+writer.ht()
+
+error = Turtle()
+error.color("black")
+error.penup()
+error.ht()
+error.goto(0,0)
+
+screen = Screen()
+screen.setup(width= 730, height=495)
+screen.title("States Game")
+screen.bgpic("blank_states_img.gif")
+
+user_answers = []
+num_states = df_states['state'].count()
+
+while len(user_answers) < num_states:
+    user_input = screen.textinput(f"{len(user_answers)} / {num_states}", "Enter a state name: ").title()
+    
+    if user_input in df_states['state'].values:
+        
+        if user_input in user_answers:
+            error.write(f"You have that already!", align= "center", font= ("Courier", 20, "bold"))
+            time.sleep(2)
+            error.clear()
+        
+        else:
+            user_answers.append(user_input)
+            state_row = df_states[df_states["state"] == user_input]
+            writer.goto(int(state_row.x) , int(state_row.y))
+            writer.write(f"{user_input}", align= "center", font= FONT)
+
+    elif user_input not in df_states["state"].values:
+
+        error.write(f"Try Again!", align= "center", font= ("Courier", 20, "bold"))
+        time.sleep(2)
+        error.clear()
+    
+    elif user_input == "Exit":
+        
+        missing_states = [n for n in df_states["state"].values if n not in user_answers]
+        df_ms = pd.DataFrame(missing_states)
+        #print(missing_states)
+        #df_ms.to_csv("missing.csv")
+        
+    
+        
+screen.exitonclick()
