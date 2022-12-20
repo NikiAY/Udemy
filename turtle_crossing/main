@@ -1,0 +1,39 @@
+import time
+import turtle as t
+import threading
+from player import Player
+from car_manager import CarManager
+from scoreboard import Scoreboard
+
+screen = t.Screen()
+screen.setup(width=600, height=600)
+screen.bgcolor("black")
+screen.title("Turtle Crossing")
+screen.tracer(0)
+game_is_on = True
+
+jimmy = Player()
+cars = CarManager()
+level = Scoreboard()
+screen.listen()
+screen.onkey(jimmy.move_y, "Up")
+
+
+while game_is_on:
+    time.sleep(0.1)
+    screen.update()
+    cars.create_cars()
+    cars.move_cars()
+    
+    for i in cars.all_cars:
+        if jimmy.distance(i) < 20:
+            game_is_on = False
+            level.game_over()
+
+    if jimmy.ycor() >= 250:
+        level.add_level()
+        jimmy.reset_position()
+        jimmy.increase_speed()
+        cars.speed_up()
+        
+screen.exitonclick()
