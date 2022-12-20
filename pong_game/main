@@ -1,0 +1,66 @@
+import turtle as t
+import time
+import random
+from paddle import UserPaddle
+from ball import Ball
+from scoreboard import ScoreBoard
+
+screen  = t.Screen()
+screen.setup(width=800, height=600)
+screen.bgcolor("black")
+screen.title("Pong Game")
+
+MAX_X = 340
+MAX_Y = 280
+MIN_X = - 340
+MIN_Y = - 280
+
+game_on = True
+user_l = UserPaddle(-370, 0)
+user_r = UserPaddle(370, 0)
+user_l_score = ScoreBoard(-100, 200)
+user_r_score = ScoreBoard(100, 200)
+ball = Ball()
+
+score_limit = screen.textinput(title="Set the score limit", prompt="What's gonna be the score limit? ")
+score_limit = int(score_limit)
+
+screen.listen()
+screen.onkey(user_l.user_up, "w")
+screen.onkey(user_l.user_down, "s")
+screen.onkey(user_r.user_up, "Up")
+screen.onkey(user_r.user_down, "Down")
+
+
+while game_on:
+    time.sleep(.03)
+    screen.update()
+
+    ball.move()
+
+    if ball.ycor() > MAX_Y or ball.ycor() < MIN_Y: 
+        ball.bounce_y()
+
+    if ball.xcor() > 320 and ball.distance(user_r) < 50 or ball.xcor() < -320 and ball.distance(user_l) < 50:
+        ball.bounce_x()
+        
+
+    if ball.xcor() > 380:
+        user_l_score.add_score()
+        ball.reset_ball()
+        
+    
+    if ball.xcor() < -380:
+        user_r_score.add_score()
+        ball.reset_ball()
+
+    if user_l_score.score == score_limit: 
+        game_on = False
+        user_l_score.game_over("Niki")
+    
+    if user_r_score.score == score_limit:
+        game_on = False
+        user_r_score.game_over("Madi")
+        
+        
+screen.exitonclick()
