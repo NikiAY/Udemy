@@ -1,0 +1,53 @@
+import turtle as t
+from snake_game import Snake
+from food import SnakeFood
+from scoreboard import ScoreBoard
+import time
+
+
+screen = t.Screen()
+screen.setup(width=600, height=600)
+screen.bgcolor("black")
+screen.title("Snake Game")
+
+game_on = True
+
+jimmy = Snake()
+food = SnakeFood()
+score_board = ScoreBoard() 
+
+screen.listen()
+screen.onkey(jimmy.up, "Up")
+screen.onkey(jimmy.down, "Down")
+screen.onkey(jimmy.left, "Left")
+screen.onkey(jimmy.right, "Right")
+
+
+while game_on:
+    screen.update()
+    time.sleep(0.03)
+    jimmy.move_f()
+    if food.distance(jimmy.head) <= 25:
+        food.random_cor()
+        score_board.add_score()
+        jimmy.grow()
+
+    for i in range(len(jimmy.snake_growth)):
+        if jimmy.snake_growth[i].distance(jimmy.head) <= 15:
+            score_board.reset_board()
+            jimmy.reset_pos() 
+    ##Collision with wall
+    if -290 >= jimmy.head.xcor() or jimmy.head.xcor() >= 290 :
+        score_board.reset_board()
+        jimmy.reset_pos()
+    
+    if -290 >= jimmy.head.ycor() or jimmy.head.ycor() >= 290 :
+        score_board.reset_board()
+        jimmy.reset_pos()
+
+   
+
+screen.exitonclick()
+
+
+
