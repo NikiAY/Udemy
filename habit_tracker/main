@@ -1,0 +1,28 @@
+import requests
+
+APP_ID = "accb746b"
+API_KEY = "c178fb6572ea732d14495f3169907382"
+
+exercise_endpint = "https://trackapi.nutritionix.com/v2/natural/exercise"
+
+headers = {
+
+    "x-app-id": APP_ID,
+    "x-app-key": API_KEY,
+    
+}
+
+config = {
+
+ "query":"ran 5 km",
+ "gender":"female",
+ "weight_kg":72.5,
+ "height_cm":167.64,
+ "age":30
+
+}
+
+# response = requests.post(url= exercise_endpint, json= config, headers= headers)
+# response.raise_for_status()
+# result = response.json()
+# print(re
